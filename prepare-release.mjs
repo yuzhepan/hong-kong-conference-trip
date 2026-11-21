@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+const root='dist';
+const files=fs.readdirSync(root,{recursive:true}).filter(f=>fs.statSync(path.join(root,f)).isFile()&&f!=='sw.js'&&!f.split(/[\\/]/).some(p=>p.startsWith('.'))).map(f=>'./'+f.replaceAll('\\','/')).sort();
+const digest=createHash('sha256');
+for(const f of files)digest.update(f).update(fs.readFileSync(path.join(root,f)));
+const revision=digest.digest('hex').slice(0,12);
+let sw=fs.readFileSync('dist/sw.js','utf8');
+sw=sw.replace(/const CACHE=.*?;/,`const CACHE='hk-pocket-v2-${revision}';`).replace(/const FILES=.*?;/,`const FILES=${JSON.stringify(['./',...files])};`);
+fs.writeFileSync('dist/sw.js',sw);
+console.log(`Offline cache: ${files.length} files, ${Math.round(files.reduce((n,f)=>n+fs.statSync(path.join(root,f)).size,0)/1024/1024*10)/10} MB`);

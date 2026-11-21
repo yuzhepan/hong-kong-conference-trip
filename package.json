@@ -1,0 +1,10 @@
+{
+  "name": "hong-kong-pocket",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check dist/app.js && node --check dist/guide.js && node --check dist/data.js && node --check dist/place-content.js && node --check dist/migration.js && node --check dist/sw.js"
+  }
+}

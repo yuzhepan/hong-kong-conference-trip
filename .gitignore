@@ -1,0 +1,10 @@
+.playwright-cli/
+output/
+browser-qa.ps1
+node_modules/
+*.log
+.openai/
+github_account_check.py
+upgrade.mjs
+finish-ui.mjs
+final-fixes.mjs
